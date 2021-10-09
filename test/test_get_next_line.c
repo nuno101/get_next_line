@@ -1,22 +1,10 @@
 #include <stdio.h>
 #include "../get_next_line.c"
 
+#define	BUFFER_SIZE 42
+
 int main()
 {
-    int n;
-    unsigned int u;
-    char c;
-    //char *str[5];
-    char str[] = "test";
-    int r; //result
-    int ftr; //ft_ result
-    int len;
-
-    n = 123;
-    u = 123567890;
-    c = 'c';
-
-    r = printf("%%\n");
-    printf("r = %d and ftr = %d\n\n", r, ftr);
+    printf("get_next_line called w/ BUFFER_SIZE = %d\n", BUFFER_SIZE);
 	return (0);
 }

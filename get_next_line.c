@@ -6,7 +6,7 @@
 /*   By: nlouro <nlouro@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/08 16:35:31 by nlouro            #+#    #+#             */
-/*   Updated: 2021/10/08 16:43:56 by nlouro           ###   ########.fr       */
+/*   Updated: 2021/10/09 11:02:40 by nlouro           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,11 @@
 
 char	*get_next_line(int fd)
 {
-	int eof;
-	char *line;
+	static char *buffer;
 
-	eof = 1;
-	while (fd != '\0')
-	{
-	}
-	return (line);
+	if (fd < 0 || fd > 100)
+		return (NULL);
+	buffer = (char *) malloc(BUFFER_SIZE * sizeof(char));
+
+	return (buffer);
 }
