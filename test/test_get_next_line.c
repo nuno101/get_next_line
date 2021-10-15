@@ -17,7 +17,7 @@ int main()
     printf("file descriptor is: %d\n", fd);
 
 	nl = get_next_line(fd);
-    printf("file first line content: %s\n", nl); 
+    printf("file first line content:\n%s\n", nl); 
 
 	return (0);
 }
