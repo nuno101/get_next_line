@@ -6,7 +6,7 @@
 /*   By: nlouro <nlouro@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/29 17:05:26 by nlouro            #+#    #+#             */
-/*   Updated: 2021/10/30 23:04:08 by nlouro           ###   ########.fr       */
+/*   Updated: 2021/10/30 23:10:57 by nlouro           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ void    ft_bzero(void *s, size_t n)
 {
     char    *ptr;
 
-    ptr = s;
+    ptr = (char *) s;
     while (n > 0)
     {
         n--;
@@ -100,7 +100,7 @@ char    *ft_substr(char const *s, unsigned int start, size_t len)
         return (0);
     if (start >= (unsigned int)ft_strlen(s))
     {
-        buffer = ft_calloc(1, 1);
+        buffer = (char *) ft_calloc(1, 1);
         if (buffer == 0)
             return (0);
         return (buffer);
