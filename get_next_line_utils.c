@@ -6,12 +6,11 @@
 /*   By: nlouro <nlouro@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/29 17:05:26 by nlouro            #+#    #+#             */
-/*   Updated: 2021/10/30 23:10:57 by nlouro           ###   ########.fr       */
+/*   Updated: 2021/10/31 15:03:16 by nlouro           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stddef.h> 
-#include <stdlib.h> 
+#include "get_next_line.h"
 
 char	*ft_strchr(const char *s, int c)
 {

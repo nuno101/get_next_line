@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include "../get_next_line.c"
+#include "../get_next_line_utils.c"
 #include <sys/stat.h>
 #include <fcntl.h>
 
@@ -7,7 +8,6 @@ int main()
 {
 	const char filepath[] = "test/file.txt";
 	int fd;
-	//int i;
 	char *nl;
     printf("get_next_line called w/ BUFFER_SIZE = %d\n", BUFFER_SIZE);
 
@@ -18,25 +18,14 @@ int main()
 /*
 	printf("next line: %s\n", nl = get_next_line(fd));
 	printf("next line: %s\n", nl = get_next_line(fd));
-	printf("next line: %s\n", nl = get_next_line(fd));
-	printf("next line: %s\n", nl = get_next_line(fd));
-	printf("next line: %s\n", nl = get_next_line(fd));
-	printf("next line: %s\n", nl = get_next_line(fd));
 
-	i = 0;
-	while (i < 2 && nl)
-    	printf("line %d: %s\n", i, nl = get_next_line(fd));
     printf("fd %d first line:\n%s\n", fd, get_next_line(fd));
-    printf("fd %d next  line:\n%s\n", fd, get_next_line(fd));
-    printf("fd %d next  line:\n%s\n", fd, get_next_line(fd));
-    printf("fd %d next  line:\n%s\n", fd, get_next_line(fd));
-    printf("fd %d next  line:\n%s\n", fd, get_next_line(fd));
     printf("fd %d next  line:\n%s\n", fd, get_next_line(fd));
 
 */
 	while ((nl = get_next_line(fd)))
-    	printf("%s\n", nl); 
-
+		printf("next line: %s\n", nl);
+    	//printf("%s\n", nl); 
 
 	return (0);
 }
