@@ -6,7 +6,7 @@
 /*   By: nlouro <nlouro@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/08 16:35:31 by nlouro            #+#    #+#             */
-/*   Updated: 2021/11/04 13:00:06 by nlouro           ###   ########.fr       */
+/*   Updated: 2021/11/04 13:55:34 by nlouro           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,24 @@ ssize_t	ft_nl_index(char *s)
 		return (i);
 	else
 		return (-1);
+}
+
+size_t  ft_strlcpy(char *dst, const char *src, size_t dstsize)
+{
+    size_t  i;
+    size_t  src_len;
+
+    src_len = ft_strlen(src);
+    if (dstsize == 0)
+        return (src_len);
+    i = 0;
+    while (*(src + i) && i < dstsize - 1)
+    {
+        *(dst + i) = *(src + i);
+        i++;
+    }
+    *(dst + i) = '\0';
+    return (src_len);
 }
 
 size_t  ft_strlcat(char *dst, const char *src, size_t dstsize)
@@ -117,7 +135,7 @@ void	*ft_realloc(void *ptr, size_t olen, size_t nlen)
 char	*get_next_line(int fd)
 {
 	char *temp;
-	//char *temp2;
+	char *temp2;
 	static char *buffer;
 	ssize_t blen;
 	char *nline;
@@ -161,17 +179,13 @@ char	*get_next_line(int fd)
 	}
 	else
 	{
-		// size of memory allocated is index of (newline + 1) + 1 byte for ft_substr \0 
-		nline = (char *) malloc((index + 2) * sizeof(char));
-		if (nline == NULL)
-			return (NULL);
 		nline = ft_substr(buffer, 0, index);
 		blen = ft_strlen(buffer);
-		buffer = ft_substr(buffer, index + 1, blen);
+		temp2 = ft_substr(buffer, index + 1, blen);
 		// the buffer size must be decreased by index + 1 bytes
 		buffer = (char *) realloc(buffer, (blen - (index + 1)) * sizeof(char));
-		if (buffer == NULL)
-			return (NULL);
+		ft_strlcpy(buffer, temp2, blen - (index + 1));
+		free(temp2);
 		return (nline);
 	}
 }

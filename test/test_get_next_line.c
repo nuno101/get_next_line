@@ -7,12 +7,13 @@
 int main()
 {
 	//const char filepath[] = "test/empty";
-	const char filepath[] = "test/file.txt";
+	//const char filepath[] = "test/file.txt";
+	const char filepath[] = "test/file2.txt";
 	int fd;
 	char *nl;
 	int debug = 1;
 
-	debug = 0;
+	//debug = 0;
 	if (debug == 1)
 	   	printf("opening file: %s\n", filepath);
 	fd = open(filepath, O_RDONLY);
@@ -29,11 +30,16 @@ int main()
 		if (debug == 1)
 			printf("next line: %s\n", nl);
 		else
+		{
+			printf("%p\n", nl);
 			printf("%s\n", nl);
+		}
+		free(nl);
 	}
 	if (debug == 1)
 		if (nl == NULL)
     		printf("last nl is NULL %s\n", nl); 
-
+	// keep program runnig to check leaks
+	getchar();
 	return (0);
 }
