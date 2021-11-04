@@ -6,7 +6,7 @@
 /*   By: nlouro <nlouro@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/08 16:35:31 by nlouro            #+#    #+#             */
-/*   Updated: 2021/11/04 13:55:34 by nlouro           ###   ########.fr       */
+/*   Updated: 2021/11/04 17:14:34 by nlouro           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -135,7 +135,7 @@ void	*ft_realloc(void *ptr, size_t olen, size_t nlen)
 char	*get_next_line(int fd)
 {
 	char *temp;
-	char *temp2;
+	//char *temp2;
 	static char *buffer;
 	ssize_t blen;
 	char *nline;
@@ -181,11 +181,11 @@ char	*get_next_line(int fd)
 	{
 		nline = ft_substr(buffer, 0, index);
 		blen = ft_strlen(buffer);
-		temp2 = ft_substr(buffer, index + 1, blen);
+		buffer = ft_substr(buffer, index + 1, blen);
 		// the buffer size must be decreased by index + 1 bytes
-		buffer = (char *) realloc(buffer, (blen - (index + 1)) * sizeof(char));
-		ft_strlcpy(buffer, temp2, blen - (index + 1));
-		free(temp2);
+		//buffer = (char *) realloc(buffer, (blen - (index + 1)) * sizeof(char));
+		//ft_strlcpy(buffer, temp2, blen - (index + 1));
+		//free(temp2);
 		return (nline);
 	}
 }

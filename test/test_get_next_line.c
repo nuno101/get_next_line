@@ -7,8 +7,8 @@
 int main()
 {
 	//const char filepath[] = "test/empty";
-	//const char filepath[] = "test/file.txt";
-	const char filepath[] = "test/file2.txt";
+	const char filepath[] = "test/file.txt";
+	//const char filepath[] = "test/file2.txt";
 	int fd;
 	char *nl;
 	int debug = 1;
@@ -34,11 +34,11 @@ int main()
 			printf("%p\n", nl);
 			printf("%s\n", nl);
 		}
-		free(nl);
 	}
 	if (debug == 1)
 		if (nl == NULL)
     		printf("last nl is NULL %s\n", nl); 
+	free(nl);
 	// keep program runnig to check leaks
 	getchar();
 	return (0);
