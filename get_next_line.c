@@ -6,7 +6,7 @@
 /*   By: nlouro <nlouro@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/08 16:35:31 by nlouro            #+#    #+#             */
-/*   Updated: 2021/11/03 19:22:26 by nlouro           ###   ########.fr       */
+/*   Updated: 2021/11/04 11:57:46 by nlouro           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,18 @@ void	*ft_realloc(void *ptr, size_t olen, size_t nlen)
 }
 
 /*
- * reads BUFFER_SIZE bytes from a given file descriptor into temp
+ * return NULL if file descriptor is invalid or BUFFER_SIZE smaller than 1 byte
+ * initialise static variable buffer if NULL. i,.e, first execution
+ * return NULL if malloc fails to allocate the requested memory
+ * while no newline find
+ *  check the lenght of the buffer content
+ *  reallocate additional BUFFER_SIZE + 1 bytes of memory if buffer not empty
+ *  reads BUFFER_SIZE bytes from a given file descriptor into temp
+ *  concatenate temp into buffer using strjoin and free temp
+ *  exit the while look if nr of bytes read is less than requested or read function returns an error
+ * find index of newline in buffer
+ *  return NULL if none
+ *  allocate index + 2 bytes for next line in buffer
  *
  */
 char	*get_next_line(int fd)
@@ -94,20 +105,25 @@ char	*get_next_line(int fd)
 	if (buffer == NULL)
 		return (NULL);
  
+	//printf("buffer: [\%s]\n", buffer);
 	while (ft_strchr(buffer, '\n') == NULL)
 	{
 		blen = ft_strlen(buffer);
-		buffer = (char *) realloc(buffer, (blen + BUFFER_SIZE + 1) * sizeof(char));
-		if (buffer == NULL)
-			return (NULL);
+		if (blen > 0)
+		{
+			// no newline found during read
+			// the buffer size must be increased before strjoin is called again
+			buffer = (char *) realloc(buffer, (blen + BUFFER_SIZE + 1) * sizeof(char));
+			if (buffer == NULL)
+				return (NULL);
+		}
 		temp = (char *) malloc(BUFFER_SIZE * sizeof(char));
 		if (temp == NULL)
 			return (NULL);
 		bytes_read = read(fd, temp, BUFFER_SIZE);
-		// todo: if no newline found during read, the buffer size must be increased before strjoin is called
 		buffer = ft_strjoin(buffer, temp);
 		free(temp);
-		if (bytes_read <= 0)
+		if (bytes_read < BUFFER_SIZE)
 			break;
 	}
 	index = ft_nl_index(buffer);
@@ -118,11 +134,17 @@ char	*get_next_line(int fd)
 	}
 	else
 	{
-		nline = (char *) malloc((index + 1) * sizeof(char));
+		// size of memory allocated is index of (newline + 1) + 1 byte for ft_substr \0 
+		nline = (char *) malloc((index + 2) * sizeof(char));
 		if (nline == NULL)
 			return (NULL);
 		nline = ft_substr(buffer, 0, index);
-		buffer = ft_substr(buffer, index + 1, ft_strlen(buffer));
+		blen = ft_strlen(buffer);
+		buffer = ft_substr(buffer, index + 1, blen);
+		// the buffer size must be decreased by index + 1 bytes
+		buffer = (char *) realloc(buffer, (blen - (index + 1)) * sizeof(char));
+		if (buffer == NULL)
+			return (NULL);
 		return (nline);
 	}
 }
