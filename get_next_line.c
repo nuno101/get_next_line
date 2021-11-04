@@ -6,11 +6,16 @@
 /*   By: nlouro <nlouro@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/08 16:35:31 by nlouro            #+#    #+#             */
-/*   Updated: 2021/11/02 15:05:47 by nlouro           ###   ########.fr       */
+/*   Updated: 2021/11/03 19:22:26 by nlouro           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
+
+/*
+ * find the position of the first newline within a given string
+ * return its position or -1 if none found
+ */
 
 ssize_t	ft_nl_index(char *s)
 {
@@ -69,6 +74,10 @@ void	*ft_realloc(void *ptr, size_t olen, size_t nlen)
 	}
 }
 
+/*
+ * reads BUFFER_SIZE bytes from a given file descriptor into temp
+ *
+ */
 char	*get_next_line(int fd)
 {
 	char *temp;
@@ -76,35 +85,32 @@ char	*get_next_line(int fd)
 	ssize_t blen;
 	char *nline;
 	ssize_t index;
-	ssize_t tlen;
+	ssize_t bytes_read;
 
 	if (fd < 0 || fd > 100 || BUFFER_SIZE < 1)
 		return (NULL);
 	if (buffer == NULL)
 		buffer = (char *) malloc((BUFFER_SIZE + 1) * sizeof(char));
-	else
+	if (buffer == NULL)
+		return (NULL);
+ 
+	while (ft_strchr(buffer, '\n') == NULL)
 	{
 		blen = ft_strlen(buffer);
-		temp = (char *) malloc((blen + BUFFER_SIZE + 1) * sizeof(char));
-	}
-	//buffer = (char *) ft_realloc(buffer, blen, blen + BUFFER_SIZE);
-	index = -1;
-	if (ft_strchr(buffer, '\n') == NULL)
-	{
+		buffer = (char *) realloc(buffer, (blen + BUFFER_SIZE + 1) * sizeof(char));
+		if (buffer == NULL)
+			return (NULL);
 		temp = (char *) malloc(BUFFER_SIZE * sizeof(char));
-		tlen = 0;
-		while (ft_strchr(temp, '\n') == NULL)
-		{
-			tlen = read(fd, temp, BUFFER_SIZE);
-			buffer = ft_strjoin(buffer, temp);
-			//printf("DEBUG temp: %s\n", temp);
-			if (tlen <= 0)
-				break;
-		}
+		if (temp == NULL)
+			return (NULL);
+		bytes_read = read(fd, temp, BUFFER_SIZE);
+		// todo: if no newline found during read, the buffer size must be increased before strjoin is called
+		buffer = ft_strjoin(buffer, temp);
 		free(temp);
+		if (bytes_read <= 0)
+			break;
 	}
 	index = ft_nl_index(buffer);
-	//	printf("DEBUG \\n found in pos: %zi\n", index);
 	if (index == -1)
 	{
 		free(buffer);
@@ -112,7 +118,9 @@ char	*get_next_line(int fd)
 	}
 	else
 	{
-		nline = (char *) malloc(sizeof(char));
+		nline = (char *) malloc((index + 1) * sizeof(char));
+		if (nline == NULL)
+			return (NULL);
 		nline = ft_substr(buffer, 0, index);
 		buffer = ft_substr(buffer, index + 1, ft_strlen(buffer));
 		return (nline);
