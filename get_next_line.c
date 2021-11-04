@@ -6,7 +6,7 @@
 /*   By: nlouro <nlouro@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/08 16:35:31 by nlouro            #+#    #+#             */
-/*   Updated: 2021/11/04 11:57:46 by nlouro           ###   ########.fr       */
+/*   Updated: 2021/11/04 13:00:06 by nlouro           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,31 @@ ssize_t	ft_nl_index(char *s)
 		return (i);
 	else
 		return (-1);
+}
+
+size_t  ft_strlcat(char *dst, const char *src, size_t dstsize)
+{
+    size_t  dst_len;
+    size_t  src_len;
+    size_t  i;
+
+    i = 0;
+    dst_len = (size_t) ft_strlen(dst);
+    src_len = ft_strlen(src);
+    if (dstsize == 0)
+        return (src_len);
+    if (dstsize < dst_len)
+        return (src_len + dstsize);
+    while ((dst_len + i < dstsize) && *(src + i) != '\0')
+    {
+        *(dst + dst_len + i) = *(src + i);
+        i++;
+    }
+    if (dst_len < dstsize && dst_len + i == dstsize)
+        *(dst + dst_len + i - 1) = '\0';
+    else
+        *(dst + dst_len + i) = '\0';
+    return (dst_len + src_len);
 }
 
 void    *ft_memcpy(void *dst, const void *src, size_t n)
@@ -92,6 +117,7 @@ void	*ft_realloc(void *ptr, size_t olen, size_t nlen)
 char	*get_next_line(int fd)
 {
 	char *temp;
+	//char *temp2;
 	static char *buffer;
 	ssize_t blen;
 	char *nline;
@@ -121,7 +147,8 @@ char	*get_next_line(int fd)
 		if (temp == NULL)
 			return (NULL);
 		bytes_read = read(fd, temp, BUFFER_SIZE);
-		buffer = ft_strjoin(buffer, temp);
+		//buffer = ft_strjoin(buffer, temp);
+		ft_strlcat(buffer, temp, blen + bytes_read + 1);
 		free(temp);
 		if (bytes_read < BUFFER_SIZE)
 			break;

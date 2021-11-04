@@ -6,7 +6,7 @@
 /*   By: nlouro <nlouro@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/29 17:05:26 by nlouro            #+#    #+#             */
-/*   Updated: 2021/11/02 11:24:00 by nlouro           ###   ########.fr       */
+/*   Updated: 2021/11/04 13:10:20 by nlouro           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ int	ft_strlen(const char *str)
 	}
 	return (i);
 }
-
+/*
 char	*ft_strjoin(char const *s1, char const *s2)
 {
 	char	*buffer;
@@ -65,8 +65,8 @@ char	*ft_strjoin(char const *s1, char const *s2)
 	*(buffer + s1_len + i) = '\0';
 	return (buffer);
 }
-
-void	ft_bzero(void *s, size_t n)
+*/
+void	ft_bzero/(void *s, size_t n)
 {
 	char	*ptr;
 
