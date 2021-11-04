@@ -6,7 +6,7 @@
 /*   By: nlouro <nlouro@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/08 16:35:31 by nlouro            #+#    #+#             */
-/*   Updated: 2021/11/04 17:14:34 by nlouro           ###   ########.fr       */
+/*   Updated: 2021/11/04 17:48:08 by nlouro           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@
 
 ssize_t	ft_nl_index(char *s)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (s[i] != '\n' && s[i] != '\0')
@@ -30,71 +30,71 @@ ssize_t	ft_nl_index(char *s)
 		return (-1);
 }
 
-size_t  ft_strlcpy(char *dst, const char *src, size_t dstsize)
+size_t	ft_strlcpy(char *dst, const char *src, size_t dstsize)
 {
-    size_t  i;
-    size_t  src_len;
+	size_t	i;
+	size_t	src_len;
 
-    src_len = ft_strlen(src);
-    if (dstsize == 0)
-        return (src_len);
-    i = 0;
-    while (*(src + i) && i < dstsize - 1)
-    {
-        *(dst + i) = *(src + i);
-        i++;
-    }
-    *(dst + i) = '\0';
-    return (src_len);
+	src_len = ft_strlen(src);
+	if (dstsize == 0)
+		return (src_len);
+	i = 0;
+	while (*(src + i) && i < dstsize - 1)
+	{
+		*(dst + i) = *(src + i);
+		i++;
+	}
+	*(dst + i) = '\0';
+	return (src_len);
 }
 
-size_t  ft_strlcat(char *dst, const char *src, size_t dstsize)
+size_t	ft_strlcat(char *dst, const char *src, size_t dstsize)
 {
-    size_t  dst_len;
-    size_t  src_len;
-    size_t  i;
+	size_t	dst_len;
+	size_t	src_len;
+	size_t	i;
 
-    i = 0;
-    dst_len = (size_t) ft_strlen(dst);
-    src_len = ft_strlen(src);
-    if (dstsize == 0)
-        return (src_len);
-    if (dstsize < dst_len)
-        return (src_len + dstsize);
-    while ((dst_len + i < dstsize) && *(src + i) != '\0')
-    {
-        *(dst + dst_len + i) = *(src + i);
-        i++;
-    }
-    if (dst_len < dstsize && dst_len + i == dstsize)
-        *(dst + dst_len + i - 1) = '\0';
-    else
-        *(dst + dst_len + i) = '\0';
-    return (dst_len + src_len);
+	i = 0;
+	dst_len = (size_t) ft_strlen(dst);
+	src_len = ft_strlen(src);
+	if (dstsize == 0)
+		return (src_len);
+	if (dstsize < dst_len)
+		return (src_len + dstsize);
+	while ((dst_len + i < dstsize) && *(src + i) != '\0')
+	{
+		*(dst + dst_len + i) = *(src + i);
+		i++;
+	}
+	if (dst_len < dstsize && dst_len + i == dstsize)
+		*(dst + dst_len + i - 1) = '\0';
+	else
+		*(dst + dst_len + i) = '\0';
+	return (dst_len + src_len);
 }
 
-void    *ft_memcpy(void *dst, const void *src, size_t n)
+void	*ft_memcpy(void *dst, const void *src, size_t n)
 {
-    char    *ptr_d;
-    char    *ptr_s;
+	char	*ptr_d;
+	char	*ptr_s;
 
-    if (dst == (void *)0 && src == (void *)0)
-        return ((void *)0);
-    ptr_d = dst;
-    ptr_s = (char *)src;
-    while (n > 0)
-    {
-        *ptr_d = *ptr_s;
-        n--;
-        ptr_d++;
-        ptr_s++;
-    }
-    return (dst);
+	if (dst == (void *)0 && src == (void *)0)
+		return ((void *)0);
+	ptr_d = dst;
+	ptr_s = (char *)src;
+	while (n > 0)
+	{
+		*ptr_d = *ptr_s;
+		n--;
+		ptr_d++;
+		ptr_s++;
+	}
+	return (dst);
 }
 
 void	*ft_realloc(void *ptr, size_t olen, size_t nlen)
 {
-	void *nptr;
+	void	*nptr;
 
 	if (nlen == 0)
 	{
@@ -102,7 +102,7 @@ void	*ft_realloc(void *ptr, size_t olen, size_t nlen)
 		return (NULL);
 	}
 	else if (ptr == NULL)
-		return malloc(nlen);
+		return (malloc(nlen));
 	else if (nlen <= olen)
 		return (ptr);
 	else
@@ -117,8 +117,7 @@ void	*ft_realloc(void *ptr, size_t olen, size_t nlen)
 	}
 }
 
-/*
- * return NULL if file descriptor is invalid or BUFFER_SIZE smaller than 1 byte
+/* return NULL if fd is invalid or BUFFER_SIZE smaller than 1 byte
  * initialise static variable buffer if NULL. i,.e, first execution
  * return NULL if malloc fails to allocate the requested memory
  * while no newline find
@@ -134,13 +133,13 @@ void	*ft_realloc(void *ptr, size_t olen, size_t nlen)
  */
 char	*get_next_line(int fd)
 {
-	char *temp;
-	//char *temp2;
-	static char *buffer;
-	ssize_t blen;
-	char *nline;
-	ssize_t index;
-	ssize_t bytes_read;
+	char	*temp;
+	//char	*temp2;
+	static char	*buffer;
+	ssize_t	blen;
+	char	*nline;
+	ssize_t	index;
+	ssize_t	bytes_read;
 
 	if (fd < 0 || fd > 100 || BUFFER_SIZE < 1)
 		return (NULL);
@@ -148,8 +147,6 @@ char	*get_next_line(int fd)
 		buffer = (char *) malloc((BUFFER_SIZE + 1) * sizeof(char));
 	if (buffer == NULL)
 		return (NULL);
- 
-	//printf("buffer: [\%s]\n", buffer);
 	while (ft_strchr(buffer, '\n') == NULL)
 	{
 		blen = ft_strlen(buffer);

@@ -6,7 +6,7 @@
 /*   By: nlouro <nlouro@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/08 16:34:20 by nlouro            #+#    #+#             */
-/*   Updated: 2021/11/04 13:54:26 by nlouro           ###   ########.fr       */
+/*   Updated: 2021/11/04 17:42:40 by nlouro           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,8 @@
 
 char	*get_next_line(int fd);
 ssize_t	ft_nl_index(char *s);
-size_t  ft_strlcpy(char *dst, const char *src, size_t dstsize);
-size_t  ft_strlcat(char *dst, const char *src, size_t dstsize);
+size_t	ft_strlcpy(char *dst, const char *src, size_t dstsize);
+size_t	ft_strlcat(char *dst, const char *src, size_t dstsize);
 char	*ft_strchr(const char *s, int c);
 int		ft_strlen(const char *str);
 //char	*ft_strjoin(char const *s1, char const *s2);
