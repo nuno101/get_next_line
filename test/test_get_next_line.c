@@ -34,11 +34,11 @@ int main()
 			printf("%p\n", nl);
 			printf("%s\n", nl);
 		}
+		free(nl);
 	}
-	if (debug == 1)
-		if (nl == NULL)
-    		printf("last nl is NULL %s\n", nl); 
-	free(nl);
+	//if (debug == 1)
+	//	if (nl == NULL)
+    //		printf("last nl is NULL %s\n", nl); 
 	// keep program runnig to check leaks
 	getchar();
 	return (0);
