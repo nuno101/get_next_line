@@ -6,7 +6,7 @@
 /*   By: nlouro <nlouro@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/08 16:35:31 by nlouro            #+#    #+#             */
-/*   Updated: 2021/11/04 17:57:50 by nlouro           ###   ########.fr       */
+/*   Updated: 2021/11/07 21:53:54 by nlouro           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,24 +28,6 @@ ssize_t	ft_nl_index(char *s)
 		return (i);
 	else
 		return (-1);
-}
-
-size_t	ft_strlcpy(char *dst, const char *src, size_t dstsize)
-{
-	size_t	i;
-	size_t	src_len;
-
-	src_len = ft_strlen(src);
-	if (dstsize == 0)
-		return (src_len);
-	i = 0;
-	while (*(src + i) && i < dstsize - 1)
-	{
-		*(dst + i) = *(src + i);
-		i++;
-	}
-	*(dst + i) = '\0';
-	return (src_len);
 }
 
 size_t	ft_strlcat(char *dst, const char *src, size_t dstsize)
@@ -73,50 +55,6 @@ size_t	ft_strlcat(char *dst, const char *src, size_t dstsize)
 	return (dst_len + src_len);
 }
 
-void	*ft_memcpy(void *dst, const void *src, size_t n)
-{
-	char	*ptr_d;
-	char	*ptr_s;
-
-	if (dst == (void *)0 && src == (void *)0)
-		return ((void *)0);
-	ptr_d = dst;
-	ptr_s = (char *)src;
-	while (n > 0)
-	{
-		*ptr_d = *ptr_s;
-		n--;
-		ptr_d++;
-		ptr_s++;
-	}
-	return (dst);
-}
-
-void	*ft_realloc(void *ptr, size_t olen, size_t nlen)
-{
-	void	*nptr;
-
-	if (nlen == 0)
-	{
-		free(ptr);
-		return (NULL);
-	}
-	else if (ptr == NULL)
-		return (malloc(nlen));
-	else if (nlen <= olen)
-		return (ptr);
-	else
-	{
-		nptr = malloc(nlen);
-		if (nptr)
-		{
-			ft_memcpy(nptr, ptr, olen);
-			free(ptr);
-		}
-		return (nptr);
-	}
-}
-
 /* return NULL if fd is invalid or BUFFER_SIZE smaller than 1 byte
  * initialise static variable buffer if NULL. i,.e, first execution
  * return NULL if malloc fails to allocate the requested memory
@@ -133,6 +71,7 @@ void	*ft_realloc(void *ptr, size_t olen, size_t nlen)
  */
 char	*get_next_line(int fd)
 {
+	char	*tmp;
 	char	*temp;
 	char	*temp2;
 	static char	*buffer;
@@ -144,41 +83,43 @@ char	*get_next_line(int fd)
 	if (fd < 0 || fd > 100 || BUFFER_SIZE < 1)
 		return (NULL);
 	if (buffer == NULL)
-		buffer = (char *) malloc((BUFFER_SIZE + 1) * sizeof(char));
-	if (buffer == NULL)
-		return (NULL);
+		buffer = (char *) ft_calloc(BUFFER_SIZE + 1, sizeof(char));
 	while (ft_strchr(buffer, '\n') == NULL)
 	{
 		blen = ft_strlen(buffer);
 		if (blen > 0)
 		{
-			// no newline found during read
-			// the buffer size must be increased before strjoin is called again
-			buffer = (char *) realloc(buffer, (blen + BUFFER_SIZE + 1) * sizeof(char));
-			if (buffer == NULL)
-				return (NULL);
+			// no newline found during read => buffer size must be increased before strlcat
+			tmp = (char *) ft_calloc(blen + BUFFER_SIZE + 1, sizeof(char));
+			ft_strlcat(tmp, buffer, blen + 1);
+			free(buffer);
+			buffer = tmp;
 		}
-		temp = (char *) malloc(BUFFER_SIZE * sizeof(char));
-		if (temp == NULL)
-			return (NULL);
+		temp = (char *) ft_calloc(BUFFER_SIZE, sizeof(char));
 		bytes_read = read(fd, temp, BUFFER_SIZE);
-		//buffer = ft_strjoin(buffer, temp);
-		ft_strlcat(buffer, temp, blen + bytes_read + 1);
+		if (bytes_read < 0)
+		{
+			free(temp);
+			return (NULL);
+		}
+		else
+			ft_strlcat(buffer, temp, blen + bytes_read + 1);
 		free(temp);
 		if (bytes_read < BUFFER_SIZE)
 			break;
 	}
 	index = ft_nl_index(buffer);
+	blen = ft_strlen(buffer);
 	if (index == -1)
 	{
-		free(buffer);
-		return (NULL);
+		if (blen > 0)
+			return (buffer);
+		else
+			return (NULL);
 	}
-	else
+    else
 	{
-		nline = ft_substr(buffer, 0, index);
-		blen = ft_strlen(buffer);
-		//buffer = ft_substr(buffer, index + 1, blen);
+		nline = ft_substr(buffer, 0, index + 1);
 		temp2 = ft_substr(buffer, index + 1, blen);
 		free(buffer);
 		buffer = temp2;

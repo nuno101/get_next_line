@@ -28,7 +28,7 @@ int main()
 	while ((nl = get_next_line(fd)))
 	{
 		if (debug == 1)
-			printf("next line: %s\n", nl);
+			printf("next line: %s", nl);
 		else
 		{
 			printf("%p\n", nl);
