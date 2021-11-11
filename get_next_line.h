@@ -6,7 +6,7 @@
 /*   By: nlouro <nlouro@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/08 16:34:20 by nlouro            #+#    #+#             */
-/*   Updated: 2021/11/11 16:18:21 by nlouro           ###   ########.fr       */
+/*   Updated: 2021/11/11 16:38:24 by nlouro           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,6 @@ int		ft_strlen(const char *str);
 void	ft_bzero(void *s, size_t n);
 void	*ft_calloc(size_t count, size_t size);
 char	*ft_substr(char const *s, unsigned int start, size_t len);
-char    *ft_strdup(const char *s1);
+char	*ft_strdup(const char *s1);
 
 #endif

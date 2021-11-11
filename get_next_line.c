@@ -6,7 +6,7 @@
 /*   By: nlouro <nlouro@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/08 16:35:31 by nlouro            #+#    #+#             */
-/*   Updated: 2021/11/11 16:28:09 by nlouro           ###   ########.fr       */
+/*   Updated: 2021/11/11 16:43:40 by nlouro           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,8 @@ size_t	ft_strlcat(char *dst, const char *src, size_t dstsize)
 	return (dst_len + src_len);
 }
 
-/* return NULL if fd is invalid or BUFFER_SIZE smaller than 1 byte
+/*
+ * return NULL if fd is invalid or BUFFER_SIZE smaller than 1 byte
  * initialise static variable buffer if NULL. i,.e, first execution
  * return NULL if malloc fails to allocate the requested memory
  * while no newline find
@@ -71,14 +72,14 @@ size_t	ft_strlcat(char *dst, const char *src, size_t dstsize)
  */
 char	*get_next_line(int fd)
 {
-	char	*tmp;
-	char	*temp;
-	char	*temp2;
+	char		*tmp;
+	char		*temp;
+	char		*temp2;
 	static char	*buffer;
-	ssize_t	blen;
-	char	*nline;
-	ssize_t	index;
-	ssize_t	bytes_read;
+	ssize_t		blen;
+	char		*nline;
+	ssize_t		index;
+	ssize_t		bytes_read;
 
 	if (fd < 0 || BUFFER_SIZE < 1)
 		return (NULL);
@@ -91,7 +92,6 @@ char	*get_next_line(int fd)
 		blen = ft_strlen(buffer);
 		if (blen > 0)
 		{
-			// no newline found during read => buffer size must be increased before strlcat
 			tmp = (char *) ft_calloc(blen + BUFFER_SIZE + 1, sizeof(char));
 			ft_strlcat(tmp, buffer, blen + 1);
 			free(buffer);
@@ -112,12 +112,11 @@ char	*get_next_line(int fd)
 		}
 		free(temp);
 		if (bytes_read < BUFFER_SIZE)
-			break;
+			break ;
 	}
 	blen = ft_strlen(buffer);
 	if (blen == 0)
 	{
-		// causing errors like: "pointer being freed was not allocated"
 		if (buffer != NULL)
 			free(buffer);
 		return (NULL);
@@ -145,22 +144,22 @@ char	*get_next_line(int fd)
 	return (nline);
 }
 
-char    *ft_strdup(const char *s1)
+char	*ft_strdup(const char *s1)
 {
-    size_t  i;
-    size_t  len;
-    char    *buffer;
+	size_t	i;
+	size_t	len;
+	char	*buffer;
 
-    len = ft_strlen(s1);
-    buffer = malloc(len + 1);
-    if (buffer == 0)
-        return (NULL);
-    i = 0;
-    while (*(s1 + i) && i < len)
-    {
-        *(buffer + i) = *(s1 + i);
-        i++;
-    }
-    *(buffer + i) = '\0';
-    return (buffer);
+	len = ft_strlen(s1);
+	buffer = malloc(len + 1);
+	if (buffer == 0)
+		return (NULL);
+	i = 0;
+	while (*(s1 + i) && i < len)
+	{
+		*(buffer + i) = *(s1 + i);
+		i++;
+	}
+	*(buffer + i) = '\0';
+	return (buffer);
 }
