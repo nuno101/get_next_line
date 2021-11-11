@@ -6,7 +6,7 @@
 /*   By: nlouro <nlouro@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/08 16:35:31 by nlouro            #+#    #+#             */
-/*   Updated: 2021/11/11 12:52:51 by nlouro           ###   ########.fr       */
+/*   Updated: 2021/11/11 16:28:09 by nlouro           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,7 @@ char	*get_next_line(int fd)
 	ssize_t	index;
 	ssize_t	bytes_read;
 
-	if (fd < 0 || fd > 100 || BUFFER_SIZE < 1)
+	if (fd < 0 || BUFFER_SIZE < 1)
 		return (NULL);
 	if (buffer == NULL)
 	{
@@ -102,37 +102,65 @@ char	*get_next_line(int fd)
 		if (bytes_read < 0)
 		{
 			free(temp);
+			free(buffer);
+			buffer = NULL;
 			return (NULL);
 		}
-		else
+		else if (bytes_read > 0)
+		{
 			ft_strlcat(buffer, temp, blen + bytes_read + 1);
+		}
 		free(temp);
 		if (bytes_read < BUFFER_SIZE)
 			break;
 	}
-	index = ft_nl_index(buffer);
 	blen = ft_strlen(buffer);
+	if (blen == 0)
+	{
+		// causing errors like: "pointer being freed was not allocated"
+		if (buffer != NULL)
+			free(buffer);
+		return (NULL);
+	}
+	index = ft_nl_index(buffer);
 	if (index == -1)
 	{
-		if (blen > 0)
-			return (buffer);
-		else
-			return (NULL);
-	}
-    else
-	{
-		nline = ft_substr(buffer, 0, index + 1);
-		if (index + 1 < blen)
-		{
-			temp2 = ft_substr(buffer, index + 1, blen);
-			free(buffer);
-			buffer = temp2;
-		}
-		else
-		{
-			free(buffer);
-			buffer = NULL;
-		}
+		nline = ft_strdup(buffer);
+		free(buffer);
+		buffer = NULL;
 		return (nline);
 	}
+	nline = ft_substr(buffer, 0, index + 1);
+	if (index + 1 < blen)
+	{
+		temp2 = ft_substr(buffer, index + 1, blen);
+		free(buffer);
+		buffer = temp2;
+	}
+	else
+	{
+		free(buffer);
+		buffer = NULL;
+	}
+	return (nline);
+}
+
+char    *ft_strdup(const char *s1)
+{
+    size_t  i;
+    size_t  len;
+    char    *buffer;
+
+    len = ft_strlen(s1);
+    buffer = malloc(len + 1);
+    if (buffer == 0)
+        return (NULL);
+    i = 0;
+    while (*(s1 + i) && i < len)
+    {
+        *(buffer + i) = *(s1 + i);
+        i++;
+    }
+    *(buffer + i) = '\0';
+    return (buffer);
 }

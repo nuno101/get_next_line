@@ -21,11 +21,21 @@ int main()
 	if (debug == 1)
     	printf("file descriptor is: %d\n", fd);
 
-/*
-	printf("next line: %s\n", nl = get_next_line(fd));
-    printf("fd %d next  line:\n%s\n", fd, get_next_line(fd));
+	printf("%s", nl = get_next_line(fd));
+	free(nl);
+	printf("%s", nl = get_next_line(fd));
+	free(nl);
+	printf("%s", nl = get_next_line(fd));
+	free(nl);
+	printf("%s", nl = get_next_line(fd));
+	free(nl);
+	printf("%s", nl = get_next_line(fd));
+	free(nl);
+	printf("%s", nl = get_next_line(fd));
+	free(nl);
+    //printf("fd %d next  line:\n%s\n", fd, get_next_line(fd));
 
-*/
+/*
 	while ((nl = get_next_line(fd)))
 	{
 		if (debug == 1)
@@ -37,10 +47,11 @@ int main()
 		}
 		free(nl);
 	}
+*/
 	//if (debug == 1)
 	//	if (nl == NULL)
     //		printf("last nl is NULL %s\n", nl); 
 	// keep program runnig to check leaks
-	//getchar();
+	getchar();
 	return (0);
 }
