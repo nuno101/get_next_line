@@ -6,7 +6,7 @@
 /*   By: nlouro <nlouro@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/08 16:35:31 by nlouro            #+#    #+#             */
-/*   Updated: 2021/11/11 16:43:40 by nlouro           ###   ########.fr       */
+/*   Updated: 2021/11/11 17:53:11 by nlouro           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,9 +107,7 @@ char	*get_next_line(int fd)
 			return (NULL);
 		}
 		else if (bytes_read > 0)
-		{
 			ft_strlcat(buffer, temp, blen + bytes_read + 1);
-		}
 		free(temp);
 		if (bytes_read < BUFFER_SIZE)
 			break ;
@@ -117,8 +115,8 @@ char	*get_next_line(int fd)
 	blen = ft_strlen(buffer);
 	if (blen == 0)
 	{
-		if (buffer != NULL)
-			free(buffer);
+		free(buffer);
+		buffer = NULL;
 		return (NULL);
 	}
 	index = ft_nl_index(buffer);
