@@ -1,5 +1,8 @@
-Tripouille-gnlTester
+gnlTester
 *.swp
+*.tgz
+.vscode
+
 
 # Prerequisites
 *.d

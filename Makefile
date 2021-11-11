@@ -6,7 +6,7 @@
 #    By: nlouro <nlouro@student.42heilbronn.de>       +#+  +:+       +#+       #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/09/25 23:47:18 by nlouro              #+#    #+#            #
-#    Updated: 2021/11/02 11:49:55 by nlouro           ###   ########.fr        #
+#    Updated: 2021/11/11 12:31:53 by nlouro           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,7 +18,7 @@ C_FILES = get_next_line.c	get_next_line_utils.c
 
 OBJ_FILES = $(C_FILES:%.c=%.o)
 
-BUFFER_SIZE = 4
+BUFFER_SIZE = 42
 
 all: $(NAME)
 

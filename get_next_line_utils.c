@@ -6,7 +6,7 @@
 /*   By: nlouro <nlouro@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/29 17:05:26 by nlouro            #+#    #+#             */
-/*   Updated: 2021/11/11 10:07:44 by nlouro           ###   ########.fr       */
+/*   Updated: 2021/11/07 21:12:06 by nlouro           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ void	*ft_calloc(size_t count, size_t size)
 	ft_bzero(buffer, count * size);
 	return (buffer);
 }
-/*
+
 char	*ft_substr(char const *s, unsigned int start, size_t len)
 {
 	char	*buffer;
@@ -89,4 +89,3 @@ char	*ft_substr(char const *s, unsigned int start, size_t len)
 	buffer[i] = '\0';
 	return (buffer);
 }
-*/

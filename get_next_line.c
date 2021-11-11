@@ -6,7 +6,7 @@
 /*   By: nlouro <nlouro@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/08 16:35:31 by nlouro            #+#    #+#             */
-/*   Updated: 2021/11/11 10:41:18 by nlouro           ###   ########.fr       */
+/*   Updated: 2021/11/11 12:52:51 by nlouro           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,51 +55,6 @@ size_t	ft_strlcat(char *dst, const char *src, size_t dstsize)
 	return (dst_len + src_len);
 }
 
-//nline = ft_substrnl(buffer, index);
-//char    *ft_substrnl(char const *s, unsigned int start, size_t len)
-char    *ft_substrnl(char *s, unsigned int index)
-{
-    char    *nline;
-    char    *temp;
-    int     slen;
-    int     i;
-
-    if (s == 0)
-        return (0);
-	slen = ft_strlen(s);
-    if (slen == 0)
-    {
-        nline = (char *) ft_calloc(1, 1);
-        if (nline == 0)
-            return (0);
-        return (nline);
-    }
-    nline = (char *)malloc((index + 1) * sizeof(char));
-    if (nline == 0)
-        return (0);
-    i = 0;
-    while ((size_t) i <= index && *(s + i) != '\0')
-    {
-        nline[i] = *(s + i);
-        i++;
-    }
-    nline[i] = '\0';
-
-    temp = (char *)malloc((slen - index) * sizeof(char));
-    if (temp == 0)
-        return (0);
-    i = index + 1;
-    while (i < slen && *(s + i) != '\0')
-    {
-        temp[i] = *(s + i);
-        i++;
-    }
-    temp[i] = '\0';
-	free(s);
-	s = temp;
-    return (nline);
-}
-
 /* return NULL if fd is invalid or BUFFER_SIZE smaller than 1 byte
  * initialise static variable buffer if NULL. i,.e, first execution
  * return NULL if malloc fails to allocate the requested memory
@@ -118,7 +73,7 @@ char	*get_next_line(int fd)
 {
 	char	*tmp;
 	char	*temp;
-	//char	*temp2;
+	char	*temp2;
 	static char	*buffer;
 	ssize_t	blen;
 	char	*nline;
@@ -128,7 +83,9 @@ char	*get_next_line(int fd)
 	if (fd < 0 || fd > 100 || BUFFER_SIZE < 1)
 		return (NULL);
 	if (buffer == NULL)
+	{
 		buffer = (char *) ft_calloc(BUFFER_SIZE + 1, sizeof(char));
+	}
 	while (ft_strchr(buffer, '\n') == NULL)
 	{
 		blen = ft_strlen(buffer);
@@ -137,7 +94,6 @@ char	*get_next_line(int fd)
 			// no newline found during read => buffer size must be increased before strlcat
 			tmp = (char *) ft_calloc(blen + BUFFER_SIZE + 1, sizeof(char));
 			ft_strlcat(tmp, buffer, blen + 1);
-//printf("1: %p\n", buffer);
 			free(buffer);
 			buffer = tmp;
 		}
@@ -145,15 +101,11 @@ char	*get_next_line(int fd)
 		bytes_read = read(fd, temp, BUFFER_SIZE);
 		if (bytes_read < 0)
 		{
-//printf("2: %p\n", temp);
 			free(temp);
 			return (NULL);
 		}
-		else if (bytes_read > 0)
-		{
+		else
 			ft_strlcat(buffer, temp, blen + bytes_read + 1);
-		}
-//printf("3: %p\n", temp);
 		free(temp);
 		if (bytes_read < BUFFER_SIZE)
 			break;
@@ -167,19 +119,20 @@ char	*get_next_line(int fd)
 		else
 			return (NULL);
 	}
-	else
+    else
 	{
-/*
 		nline = ft_substr(buffer, 0, index + 1);
-		temp2 = ft_substr(buffer, index + 1, blen);
-// leaks here
-printf("4: %p ", temp2);
-		free(buffer);
-		buffer = temp2;
-*/
-printf("40: %p ", buffer);
-		nline = ft_substrnl(buffer, index);
-printf("41: %p ", buffer);
+		if (index + 1 < blen)
+		{
+			temp2 = ft_substr(buffer, index + 1, blen);
+			free(buffer);
+			buffer = temp2;
+		}
+		else
+		{
+			free(buffer);
+			buffer = NULL;
+		}
 		return (nline);
 	}
 }
