@@ -6,7 +6,7 @@
 /*   By: nlouro <nlouro@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/08 16:35:31 by nlouro            #+#    #+#             */
-/*   Updated: 2021/11/12 10:22:05 by nlouro           ###   ########.fr       */
+/*   Updated: 2021/11/12 10:46:43 by nlouro           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,9 +64,6 @@ size_t	ft_strlcat(char *dst, const char *src, size_t dstsize)
  *  reads BUFFER_SIZE bytes from a given file descriptor into temp
  *  concatenate temp into buffer using strjoin and free temp
  *  exit the while look if nr of bytes read is less than requested or read error
- * find index of newline in buffer
- *  return NULL if none
- *  allocate index + 2 bytes for next line in buffer
  *
  */
 char	*get_next_line(int fd)
@@ -142,24 +139,4 @@ char	*split_next_line(char **buffer, ssize_t blen)
 		*buffer = NULL;
 	}
 	return (nline);
-}
-
-char	*ft_strdup(const char *s1)
-{
-	size_t	i;
-	size_t	len;
-	char	*buffer;
-
-	len = ft_strlen(s1);
-	buffer = malloc(len + 1);
-	if (buffer == 0)
-		return (NULL);
-	i = 0;
-	while (*(s1 + i) && i < len)
-	{
-		*(buffer + i) = *(s1 + i);
-		i++;
-	}
-	*(buffer + i) = '\0';
-	return (buffer);
 }
