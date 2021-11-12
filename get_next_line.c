@@ -6,7 +6,7 @@
 /*   By: nlouro <nlouro@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/08 16:35:31 by nlouro            #+#    #+#             */
-/*   Updated: 2021/11/12 13:44:31 by nlouro           ###   ########.fr       */
+/*   Updated: 2021/11/12 15:57:51 by nlouro           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,18 +57,12 @@ size_t	ft_strlcat(char *dst, const char *src, size_t dstsize)
 
 /*
  * return NULL if fd is invalid or BUFFER_SIZE smaller than 1 byte
- * initialise static variable buffer if NULL. i,.e, first execution
- * while no newline find
- *  check the lenght of the buffer content
- *  reallocate additional BUFFER_SIZE + 1 bytes of memory if buffer not empty
- *  reads BUFFER_SIZE bytes from a given file descriptor into temp
- *  concatenate temp into buffer using strjoin and free temp
- *  exit the while look if nr of bytes read is less than requested or read error
- *
+ * initialise static variable buffer if NULL. ,i.e, first execution
+ * while no newline find in buffer
+ * read_file until \n is found, the file end is reached or an error occurs
  */
 char	*get_next_line(int fd)
 {
-	char		*temp;
 	static char	*buffer;
 	ssize_t		blen;
 	ssize_t		bytes_read;
@@ -80,25 +74,9 @@ char	*get_next_line(int fd)
 	while (ft_strchr(buffer, '\n') == NULL)
 	{
 		blen = ft_strlen(buffer);
-		if (blen > 0)
-		{
-			temp = (char *) ft_calloc(blen + BUFFER_SIZE + 1, sizeof(char));
-			ft_strlcat(temp, buffer, blen + 1);
-			free(buffer);
-			buffer = temp;
-		}
-		temp = (char *) ft_calloc(BUFFER_SIZE + 1, sizeof(char));
-		bytes_read = read(fd, temp, BUFFER_SIZE);
+		bytes_read = read_file(fd, &buffer, blen);
 		if (bytes_read < 0)
-		{
-			free(temp);
-			free(buffer);
-			buffer = NULL;
 			return (NULL);
-		}
-		else if (bytes_read > 0)
-			ft_strlcat(buffer, temp, blen + bytes_read + 2);
-		free(temp);
 		if (bytes_read < BUFFER_SIZE)
 			break ;
 	}
@@ -112,6 +90,40 @@ char	*get_next_line(int fd)
 	return (split_next_line(&buffer, blen));
 }
 
+/*
+ * read BUFFER_SIZE bytes from fd into temp
+ * concatenate temp into buffer
+ * increase memory allocation as needed
+ */
+ssize_t	read_file(int fd, char **buffer, ssize_t blen)
+{
+	char	*temp;
+	ssize_t	bytes_read;
+
+	if (blen > 0)
+	{
+		temp = (char *) ft_calloc(blen + BUFFER_SIZE + 1, sizeof(char));
+		ft_strlcat(temp, *buffer, blen + 1);
+		free(*buffer);
+		*buffer = temp;
+	}
+	temp = (char *) ft_calloc(BUFFER_SIZE + 1, sizeof(char));
+	bytes_read = read(fd, temp, BUFFER_SIZE);
+	if (bytes_read < 0)
+	{
+		free(*buffer);
+		*buffer = NULL;
+	}
+	else if (bytes_read > 0)
+		ft_strlcat(*buffer, temp, blen + bytes_read + 2);
+	free(temp);
+	return (bytes_read);
+}
+
+/*
+ * return first nextline from buffer 
+ * shorten buffer accordingly
+ */
 char	*split_next_line(char **buffer, ssize_t blen)
 {
 	ssize_t	index;
