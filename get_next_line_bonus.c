@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.c                                    :+:      :+:    :+:   */
+/*   get_next_line_bonus.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: nlouro <nlouro@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/08 16:35:31 by nlouro            #+#    #+#             */
-/*   Updated: 2021/11/12 15:57:51 by nlouro           ###   ########.fr       */
+/*   Updated: 2021/11/12 18:11:38 by nlouro           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,31 +63,31 @@ size_t	ft_strlcat(char *dst, const char *src, size_t dstsize)
  */
 char	*get_next_line(int fd)
 {
-	static char	*buffer;
+	static char	*buffer[8192];
 	ssize_t		blen;
 	ssize_t		bytes_read;
 
 	if (fd < 0 || BUFFER_SIZE < 1)
 		return (NULL);
-	if (buffer == NULL)
-		buffer = (char *) ft_calloc(BUFFER_SIZE + 1, sizeof(char));
-	while (ft_strchr(buffer, '\n') == NULL)
+	if (buffer[fd] == NULL)
+		buffer[fd] = (char *) ft_calloc(BUFFER_SIZE + 1, sizeof(char));
+	while (ft_strchr(buffer[fd], '\n') == NULL)
 	{
-		blen = ft_strlen(buffer);
-		bytes_read = read_file(fd, &buffer, blen);
+		blen = ft_strlen(buffer[fd]);
+		bytes_read = read_file(fd, &buffer[fd], blen);
 		if (bytes_read < 0)
 			return (NULL);
 		if (bytes_read < BUFFER_SIZE)
 			break ;
 	}
-	blen = ft_strlen(buffer);
+	blen = ft_strlen(buffer[fd]);
 	if (blen == 0)
 	{
-		free(buffer);
-		buffer = NULL;
+		free(buffer[fd]);
+		buffer[fd] = NULL;
 		return (NULL);
 	}
-	return (split_next_line(&buffer, blen));
+	return (split_next_line(&buffer[fd], blen));
 }
 
 /*
