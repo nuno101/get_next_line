@@ -6,7 +6,7 @@
 /*   By: nlouro <nlouro@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/08 16:35:31 by nlouro            #+#    #+#             */
-/*   Updated: 2021/11/12 09:40:28 by nlouro           ###   ########.fr       */
+/*   Updated: 2021/11/12 10:22:05 by nlouro           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,8 +74,6 @@ char	*get_next_line(int fd)
 	char		*temp;
 	static char	*buffer;
 	ssize_t		blen;
-	char		*nline;
-	ssize_t		index;
 	ssize_t		bytes_read;
 
 	if (fd < 0 || BUFFER_SIZE < 1)
@@ -114,25 +112,34 @@ char	*get_next_line(int fd)
 		buffer = NULL;
 		return (NULL);
 	}
-	index = ft_nl_index(buffer);
+	return (split_next_line(&buffer, blen));
+}
+
+char	*split_next_line(char **buffer, ssize_t blen)
+{
+	ssize_t	index;
+	char	*temp;
+	char	*nline;
+
+	index = ft_nl_index(*buffer);
 	if (index == -1)
 	{
-		nline = ft_strdup(buffer);
-		free(buffer);
-		buffer = NULL;
+		nline = ft_strdup(*buffer);
+		free(*buffer);
+		*buffer = NULL;
 		return (nline);
 	}
-	nline = ft_substr(buffer, 0, index + 1);
+	nline = ft_substr(*buffer, 0, index + 1);
 	if (index + 1 < blen)
 	{
-		temp = ft_substr(buffer, index + 1, blen);
-		free(buffer);
-		buffer = temp;
+		temp = ft_substr(*buffer, index + 1, blen);
+		free(*buffer);
+		*buffer = temp;
 	}
 	else
 	{
-		free(buffer);
-		buffer = NULL;
+		free(*buffer);
+		*buffer = NULL;
 	}
 	return (nline);
 }
