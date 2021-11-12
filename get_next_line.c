@@ -6,7 +6,7 @@
 /*   By: nlouro <nlouro@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/08 16:35:31 by nlouro            #+#    #+#             */
-/*   Updated: 2021/11/12 10:46:43 by nlouro           ###   ########.fr       */
+/*   Updated: 2021/11/12 13:44:31 by nlouro           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,7 @@ char	*get_next_line(int fd)
 			free(buffer);
 			buffer = temp;
 		}
-		temp = (char *) ft_calloc(BUFFER_SIZE, sizeof(char));
+		temp = (char *) ft_calloc(BUFFER_SIZE + 1, sizeof(char));
 		bytes_read = read(fd, temp, BUFFER_SIZE);
 		if (bytes_read < 0)
 		{
@@ -97,7 +97,7 @@ char	*get_next_line(int fd)
 			return (NULL);
 		}
 		else if (bytes_read > 0)
-			ft_strlcat(buffer, temp, blen + bytes_read + 1);
+			ft_strlcat(buffer, temp, blen + bytes_read + 2);
 		free(temp);
 		if (bytes_read < BUFFER_SIZE)
 			break ;
@@ -129,7 +129,7 @@ char	*split_next_line(char **buffer, ssize_t blen)
 	nline = ft_substr(*buffer, 0, index + 1);
 	if (index + 1 < blen)
 	{
-		temp = ft_substr(*buffer, index + 1, blen);
+		temp = ft_substr(*buffer, index + 1, blen + 1);
 		free(*buffer);
 		*buffer = temp;
 	}
