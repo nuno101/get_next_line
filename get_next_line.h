@@ -6,7 +6,7 @@
 /*   By: nlouro <nlouro@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/08 16:34:20 by nlouro            #+#    #+#             */
-/*   Updated: 2021/11/12 15:39:26 by nlouro           ###   ########.fr       */
+/*   Updated: 2021/11/18 11:23:42 by nlouro           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,6 @@
 # define GET_NEXT_LINE_H
 # include <unistd.h>
 # include <stdlib.h>
-# include <stdio.h>
-# include <stddef.h>
 
 char	*get_next_line(int fd);
 ssize_t	ft_nl_index(char *s);
